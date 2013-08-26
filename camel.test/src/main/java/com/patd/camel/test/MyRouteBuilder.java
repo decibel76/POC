@@ -6,6 +6,8 @@ import org.apache.camel.builder.RouteBuilder;
  * A Camel Java DSL Router
  */
 public class MyRouteBuilder extends RouteBuilder {
+	
+	public String theFrom = null;
 
     /**
      * Let's configure the Camel routing rules using Java code...
@@ -15,14 +17,22 @@ public class MyRouteBuilder extends RouteBuilder {
         // here is a sample which processes the input files
         // (leaving them in place - see the 'noop' flag)
         // then performs content based routing on the message using XPath
-        from("file:src/data?noop=true")
+        from(theFrom)
+        	.routeId("XML Route")
             .choice()
+            	.when(simple("${body} == null"))
+            	.to("direct:test")
                 .when(xpath("/person/city = 'London'"))
                     .log("UK message")
                     .to("file:target/messages/uk")
                 .otherwise()
                     .log("Other message")
                     .to("file:target/messages/others");
+        
+        from("direct:test")
+        .routeId("EmptyRoute")
+        .log("empty")
+        .to("log:com.patd.camel.test.MyRouteBuilder?showAll=true&showProperties=true");
     }
 
 }
