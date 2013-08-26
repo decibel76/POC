@@ -22,6 +22,11 @@ public class MyRouteBuilder extends RouteBuilder {
             .choice()
             	.when(simple("${body} == null"))
             	.to("direct:test")
+            	.otherwise().log("Not null message sending to next route")
+            	.to("direct:processFurther");
+        
+        from("direct:processFurther").routeId("FutherProcess")
+        		.choice()
                 .when(xpath("/person/city = 'London'"))
                     .log("UK message")
                     .to("file:target/messages/uk")

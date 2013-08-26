@@ -45,19 +45,24 @@ public class MainApp {
     	
     	// now let's wait for the jobs to complete.
     	NotifyBuilder notify = new NotifyBuilder(ctx);
+    	NotifyBuilder successfulRoute = new NotifyBuilder(ctx);
     	
-    	// when 4 messages have passed we're done.
-    	//notify.whenAnyReceivedMatches(pred).create();
-    	notify.fromRoute("emptyRoute").whenReceived(1).create();
+    	
+    	successfulRoute.whenDone(1).wereSentTo("direct:processFurther").create();
+    	// when 3 messages empty polls have passed we're done.
+    	notify.whenDone(3).wereSentTo("direct:test").create();
     	
     	while(!notify.matches())
     	{
-    		System.out.println("sleeping");
+    	//	System.out.println("sleeping");
     		Thread.sleep(100);
     		
     	}
     	
-    	//log.info("test");
+    	if(successfulRoute.matches())
+    		log.info("processed messages");
+    		else
+    			log.info("nothing was processed");
   		ctx.stop();
     	
     }
