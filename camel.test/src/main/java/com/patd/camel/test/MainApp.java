@@ -33,9 +33,11 @@ public class MainApp {
     	
     	MyRouteBuilder routes = new MyRouteBuilder();
     	
-    	routes.theFrom = "file:src/data?noop=true&sendEmptyMessageWhenIdle=true&idempotentRepository=#repository";
-    	
-    	ctx.addRoutes(routes);
+    	//routes.theFrom = "file:src/data?noop=true&sendEmptyMessageWhenIdle=true&idempotentRepository=#repository";
+    	routes.theFrom = "smb://boxee:boxee@192.168.10.4/media/mediaRAID/data?noop=true&sendEmptyMessageWhenIdle=true&idempotentRepository=#repository";
+      	System.setProperty("jcifs.netbios.wins","192.168.1.220");
+    	System.setProperty("jcifs.util.loglevel","3");
+      	ctx.addRoutes(routes);
     	ctx.start();
     	
     	
