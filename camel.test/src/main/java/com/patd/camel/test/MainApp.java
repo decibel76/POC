@@ -11,7 +11,7 @@ import org.apache.camel.impl.SimpleRegistry;
 import org.apache.camel.model.language.SimpleExpression;
 import org.apache.camel.processor.idempotent.FileIdempotentRepository;
 
-import com.sun.istack.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * A Camel Application
